@@ -5,7 +5,7 @@ function input({ type = "text", label, id, state, setState }) {
         type={type}
         className="form-control"
         id={id}
-        placeholder="name@example.com"
+        placeholder=""
         value={state}
         onChange={(e) => setState(e.target.value)}
       />
