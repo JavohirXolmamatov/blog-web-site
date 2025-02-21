@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { Input } from "../ui";
 import { useSelector, useDispatch } from "react-redux";
-import { userRegisterStart } from "../slice/auth";
+import {
+  userRegisterFailure,
+  userRegisterStart,
+  userRegisterSuccess,
+} from "../slice/auth";
+import AuthService from "../service/authService";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -10,18 +15,29 @@ function Register() {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.auth);
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    dispatch(userRegisterStart());
+    const user = {
+      username,
+      email,
+      password,
+    };
+    try {
+      const response = await AuthService.userRegister(user);
+      console.log(response.data);
+      dispatch(userRegisterSuccess());
+    } catch (error) {
+      console.log("xatolik:", error);
+      dispatch(userRegisterFailure());
+    }
   };
 
   return (
     <div className="w-100" style={{ height: "80dvh" }}>
       <form
         className="w-25 h-100 m-auto d-flex flex-column justify-content-center"
-        onSubmit={(e) => {
-          handleRegister(e);
-          dispatch(userRegisterStart());
-        }}
+        onSubmit={(e) => handleRegister(e)}
       >
         <img
           src="https://i.imgur.com/W816azR.jpeg"
