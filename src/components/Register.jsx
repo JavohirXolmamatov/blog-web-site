@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { Input } from "../ui";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  userRegisterFailure,
-  userRegisterStart,
-  userRegisterSuccess,
-} from "../slice/auth";
+import { signUserFailure, signUserStart, signUserSuccess } from "../slice/auth";
 import AuthService from "../service/authService";
 
 function Register() {
@@ -17,19 +13,13 @@ function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    dispatch(userRegisterStart());
-    const user = {
-      username,
-      email,
-      password,
-    };
+    dispatch(signUserStart());
+    const user = { username, email, password };
     try {
       const response = await AuthService.userRegister(user);
-      console.log(response.data);
-      dispatch(userRegisterSuccess());
+      dispatch(signUserSuccess(response.data));
     } catch (error) {
-      console.log("xatolik:", error);
-      dispatch(userRegisterFailure());
+      dispatch(signUserFailure(error.response.data.errors));
     }
   };
 

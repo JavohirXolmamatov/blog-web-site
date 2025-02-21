@@ -1,26 +1,32 @@
 import { useState } from "react";
 import { Input } from "../ui";
 import { useDispatch } from "react-redux";
-import { userLoginStart } from "../slice/auth";
+import { signUserFailure, signUserStart, signUserSuccess } from "../slice/auth";
 import { useSelector } from "react-redux";
+import AuthService from "../service/authService";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.auth);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(userLoginStart());
+    dispatch(signUserStart());
+    const user = { email, password };
+    try {
+      const response = await AuthService.userLogin(user);
+      dispatch(signUserSuccess(response.data));
+    } catch (error) {
+      dispatch(signUserFailure(error.response.data.errors));
+    }
   };
 
   return (
     <div className="w-100" style={{ height: "80dvh" }}>
       <form
         className="w-25 h-100 m-auto d-flex flex-column justify-content-center"
-        onSubmit={(e) => {
-          handleLogin(e);
-        }}
+        onSubmit={(e) => handleLogin(e)}
       >
         <img
           src="https://i.imgur.com/W816azR.jpeg"
