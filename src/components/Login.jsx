@@ -5,11 +5,13 @@ import { signUserFailure, signUserStart, signUserSuccess } from "../slice/auth";
 import { useSelector } from "react-redux";
 import AuthService from "../service/authService";
 import ValidationError from "./ValidationError";
+import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading, loggedIn } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,6 +20,7 @@ function Login() {
     try {
       const response = await AuthService.userLogin(user);
       dispatch(signUserSuccess(response.data));
+      navigate("/");
     } catch (error) {
       dispatch(signUserFailure(error.response.data.errors));
     }
