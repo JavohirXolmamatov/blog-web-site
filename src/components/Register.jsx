@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../ui";
 import { useSelector, useDispatch } from "react-redux";
 import { signUserFailure, signUserStart, signUserSuccess } from "../slice/auth";
@@ -11,7 +11,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading, loggedIn } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -26,6 +26,12 @@ function Register() {
       dispatch(signUserFailure(error.response.data.errors));
     }
   };
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/");
+    }
+  }, [loggedIn]);
 
   return (
     <div className="w-100" style={{ height: "80dvh" }}>
@@ -54,12 +60,14 @@ function Register() {
           setState={setUsername}
         />
         <Input
+          type="email"
           label={"Email address"}
           id={"emailAddress"}
           state={email}
           setState={setEmail}
         />
         <Input
+          type="password"
           label={"Password"}
           id={"password"}
           state={password}

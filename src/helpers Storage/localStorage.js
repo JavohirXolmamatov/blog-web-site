@@ -6,6 +6,13 @@ const LocalStorage = {
       console.log("Save token error");
     }
   },
+  getItemToken(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (error) {
+      console.log("get token error");
+    }
+  },
 };
 
 export default LocalStorage;

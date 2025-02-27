@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../ui";
 import { useDispatch } from "react-redux";
 import { signUserFailure, signUserStart, signUserSuccess } from "../slice/auth";
@@ -26,6 +26,12 @@ function Login() {
     }
   };
 
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/");
+    }
+  }, [loggedIn]);
+
   return (
     <div className="w-100" style={{ height: "80dvh" }}>
       <form
@@ -47,12 +53,14 @@ function Login() {
         <h1 className="h3 mb-3 fw-normal">Please Login</h1>
         <ValidationError />
         <Input
+          type="email"
           label={"Email address"}
           id={"emailAddress"}
           state={email}
           setState={setEmail}
         />
         <Input
+          type="password"
           label={"Password"}
           id={"password"}
           state={password}
