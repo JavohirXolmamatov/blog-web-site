@@ -13,6 +13,13 @@ const LocalStorage = {
       console.log("get token error");
     }
   },
+  removeItemToken(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.log("error remove Token");
+    }
+  },
 };
 
 export default LocalStorage;
