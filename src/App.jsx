@@ -5,6 +5,12 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signUserSuccess } from "./slice/auth";
 import LocalStorage from "./helpers Storage/localStorage";
+import ArticleService from "./service/articleService";
+import {
+  getArticleFailure,
+  getArticleStart,
+  getArticleSuccess,
+} from "./slice/article";
 
 function App() {
   const dispatch = useDispatch();
@@ -20,11 +26,22 @@ function App() {
     }
   };
 
+  const getArticle = async () => {
+    dispatch(getArticleStart());
+    try {
+      const response = await ArticleService.getArticles();
+      dispatch(getArticleSuccess(response.articles));
+    } catch (error) {
+      dispatch(getArticleFailure(error));
+    }
+  };
+
   useEffect(() => {
     const token = LocalStorage.getItemToken("token");
     if (token) {
       getUser();
     }
+    getArticle();
   }, []);
 
   useEffect(() => {
