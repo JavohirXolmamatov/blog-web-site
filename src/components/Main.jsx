@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Loader from "../ui/Loader";
+import { useNavigate } from "react-router-dom";
 
 function Main() {
+  const navigate = useNavigate();
   const { articles, isLoading } = useSelector((state) => state.article);
 
   return (
@@ -13,7 +15,7 @@ function Main() {
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           {articles &&
             articles.map((item) => (
-              <div className="col" key={item.id}>
+              <div className="col" key={item.slug}>
                 <div className="card h-100 shadow-sm">
                   <svg
                     className="bd-placeholder-img card-img-top"
@@ -37,6 +39,9 @@ function Main() {
                       <button
                         type="button"
                         className="btn btn-sm btn-outline-secondary"
+                        onClick={() => {
+                          navigate(`/article/${item.slug}`);
+                        }}
                       >
                         View
                       </button>
