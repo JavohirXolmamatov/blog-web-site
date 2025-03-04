@@ -22,6 +22,8 @@ function ArticleDetail() {
     }
   };
 
+  //ddwed
+
   useEffect(() => {
     articleDetail();
   }, [slug]);
