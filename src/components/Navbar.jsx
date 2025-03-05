@@ -39,6 +39,12 @@ function Navbar() {
             <p className="me-3 py-2 m-0 link-body-emphasis text-decoration-none">
               {user.user.username}
             </p>
+            <button
+              className="me-3 btn btn-success"
+              onClick={() => navigate("/create-article")}
+            >
+              Create
+            </button>
             <button className="btn btn-outline-danger " onClick={logoutHandler}>
               Logaut
             </button>

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 function Main() {
   const navigate = useNavigate();
   const { articles, isLoading } = useSelector((state) => state.article);
+  const { loggedIn } = useSelector((state) => state.auth);
 
   return (
     <div className="album py-5">
@@ -45,18 +46,24 @@ function Main() {
                       >
                         View
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-primary"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-danger"
-                      >
-                        Delete
-                      </button>
+                      {loggedIn ? (
+                        <>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-primary"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-danger"
+                          >
+                            Delete
+                          </button>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                     <small className="text-body-secondary text-capitalize fw-bold">
                       {item.author.username}
