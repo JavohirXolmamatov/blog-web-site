@@ -82,6 +82,9 @@ function Main() {
                           <button
                             type="button"
                             className="btn btn-sm btn-outline-primary"
+                            onClick={() =>
+                              navigate(`edit-article/${item.slug}`)
+                            }
                           >
                             Edit
                           </button>
