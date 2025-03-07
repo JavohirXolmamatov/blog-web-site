@@ -12,7 +12,7 @@ import {
 function Main() {
   const navigate = useNavigate();
   const { articles, isLoading } = useSelector((state) => state.article);
-  const { loggedIn } = useSelector((state) => state.auth);
+  const { loggedIn, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const getArticle = async () => {
@@ -22,6 +22,15 @@ function Main() {
       dispatch(getArticleSuccess(response.articles));
     } catch (error) {
       dispatch(getArticleFailure(error));
+    }
+  };
+
+  const deleteArticle = async (slug) => {
+    try {
+      await ArticleService.deleteArticle(slug);
+      getArticle();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -67,7 +76,8 @@ function Main() {
                       >
                         View
                       </button>
-                      {loggedIn ? (
+                      {loggedIn &&
+                      user.user.username === item.author.username ? (
                         <>
                           <button
                             type="button"
@@ -78,6 +88,7 @@ function Main() {
                           <button
                             type="button"
                             className="btn btn-sm btn-outline-danger"
+                            onClick={() => deleteArticle(item.slug)}
                           >
                             Delete
                           </button>
